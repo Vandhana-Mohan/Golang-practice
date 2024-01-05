@@ -15,7 +15,4 @@ func main(){
 
 	currentTime := time.Now()
 	fmt.Println(currentTime)
-
-	specificTime := time.Date(2022, time.January, 1, 12, 0, 0, 0, time.UTC)
-	fmt.Println(specificTime)
 }
