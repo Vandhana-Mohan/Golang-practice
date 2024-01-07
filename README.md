@@ -524,3 +524,365 @@ func doubleNum(num int) int {
 
 fmt.Println(doubleNum(x)) // Prints: 10
 ```
+Each function has its own specific scope, take a look at the code:
+
+```
+package main
+import "fmt"
+func performAddition() { 
+	x := 5  
+	y := 7  
+	fmt.Println("The sum of", x, "and", y, "is", x + y)
+}
+func main() {  
+	performAddition()  
+	fmt.Println("What if", x, "was different?")
+}
+```
+
+There are three different scopes present in this example:
+
+- The global scope, which contains the function definitions for `main()` and `performAddition()`.
+- `performAddition()` has a local scope, which defines `x` and `y`.
+- `main()` has a local scope also. It can access `performAddition()` because that’s defined on the same scope level as `main()` but can’t access the internals of `performAddition`‘s scope (i.e., `x` or `y`).
+
+A function can be given a return _type_, the type of a value that will be returned by the function. At the call site, the return value can be stored within a variable of the same type as the function’s return.
+
+```
+func getLengthOfCentralPark() int32 {  
+	var lengthInBlocks int32  
+	lengthInBlocks = 51  
+	return lengthInBlocks
+}
+
+func main() {  
+  var centralParkLength int32  
+  centralParkLength = getLengthOfCentralPark()  
+  fmt.Println(centralParkLength) // Prints: 51  
+}
+```
+
+we can also provide functions with information using _parameters_. Function parameters are variables that are used within the function to use in some sort of computation or calculation. When calling a function, we give _arguments_, which are the values that we want those parameter variables to take. We give our function parameters types when defining the function:
+
+```
+func multiplier(x int32, y int32) int32 {  return x * y}
+```
+
+Since both parameters have the same type, we could write it as:
+
+```
+func multiplier(x, y int32) int32 {  
+   return x * y
+}
+```
+
+call our function with literal values as arguments:
+
+```
+func main() {  
+   var product int32  
+   product = multiplier(25, 4)  
+   fmt.Println(product) // Prints: 100
+}
+```
+
+We can also call our function with variables as arguments:
+
+```
+func main() {  
+  var mainX, mainY, newProduct int32  
+  mainX = 6  
+  mainY = 7  
+  newProduct = multiplier(mainX, mainY)  
+  fmt.Println(newProduct) // Prints: 42
+}
+```
+
+Functions also have the ability to return multiple values. 
+
+```
+func GPA(midtermGrade float32, finalGrade float32) (string, float32){  
+averageGrade := (midtermGrade + finalGrade) / 2  
+var gradeLetter string  
+	if averageGrade > 90 {    
+		gradeLetter = "A"  
+	} else if averageGrade > 80 {    
+		gradeLetter = "B"  
+	} else if averageGrade > 70 {    
+		gradeLetter = "C"  
+	} else if averageGrade > 60 {   
+		gradeLetter = "D"  
+	} else {    
+		gradeLetter = "F"  
+	}  
+	return gradeLetter, averageGrade 
+}
+```
+
+### Deferring Resolution
+
+We can delay a function call to the end of the current scope by using the `defer` keyword. `defer` tells Go to run a function, but at the end of the current function. 
+
+#### Addresses
+
+The space that the computer allocates is called an _address_. Each address is marked as a unique numerical value.
+
+To find a variable’s address we use the `&` operator followed by the variable name, like so:
+
+```
+x := "My very first address"
+fmt.Println(&x) // Prints 0x414020
+```
+
+#### Pointers
+
+Pointers are variables that specifically store addresses.
+
+We even set the data type of the addresses’ value for the pointer. For instance:
+
+```
+var pointerForInt *int  
+  
+minutes := 525600  
+  
+pointerForInt = &minutes  
+  
+fmt.Println(pointerForInt) // Prints 0xc000018038
+
+`pointerForInt` will store the address of a variable that has an `int` data type. `*` operator signifies that this variable will store an address and the `int` portion means that the address contains an integer value.
+
+or in short
+
+minutes := 55  
+  
+pointerForInt := &minutes
+```
+
+ address -  values are stored
+ pointers - keep track of address
+
+Dereferencing / indirecting : use pointer to access the address and change its value
+
+```lyrics := "Moments so dear"  
+pointerForStr := &lyrics  
+  
+*pointerForStr = "Journeys to plan"  
+  
+fmt.Println(lyrics) // Prints: Journeys to plan
+```
+
+Go is a pass-by-value language while Js which is pass by reference language
+
+==pass-by-value== In Go, when you pass a variable to a function, you're passing a copy of the value, not the original variable itself. Any modifications made to the parameter inside the function do not affect the original variable outside the function.
+
+```func addHundred(num int) {  
+  num += 100  
+}  
+  
+func main() {  
+  x := 1  
+  addHundred(x)  
+  fmt.Println(x) // Prints 1  
+}
+```
+
+but if we do using returned value
+
+```func addHundred(num int) int {  
+  num += 100  
+  return num
+}  
+  
+func main() {  
+  x := 1  
+  x = addHundred(x)  
+  fmt.Println(x) // Prints 101
+}
+```
+
+or using pointers
+
+```
+func addHundred (numPtr *int) {  
+  *numPtr += 100  
+}  
+
+// function has a parameter of a pointer for an integer. By passing the value of // a pointer (which is an address) to `addHundred()`, we  dereference 
+// the address and add `100` to its value. 
+  
+func main() {  
+  x := 1  
+  addHundred(&x)  // `addHundred()` expects a pointer for an argument
+  fmt.Println(x) // Prints 101  
+}
+```
+
+The primary difference in above 2 ways lies in how the modification of the original value is done: one uses a returned value, and the other uses a pointer. Using a return value may be more straightforward in many cases. Using pointers can be more efficient when working with large data structures, but it also adds complexity. 
+
+- The `*` operator can be used to assign a pointer the type of the value its address holds.
+- The `*` operator can also be used to dereference a pointer and assign a new value.
+
+#### Looping
+
+Classic for loop (definite loop)
+
+```
+for number := 0; number < 5; number++ {  
+  fmt.Print(number, " ")  // Output: 0 1 2 3 4
+}  
+
+no () around for loop, and := to initialize the variable within for loop stmt
+```
+
+For as a While Loop  (Indefinite loop)
+
+```
+number := 0 // Initialize a variable to be used inside the loop  
+for number < 5 {  
+  fmt.Println(number)  
+  number++ // Update the variable being used  
+}
+```
+
+A `break` statement changes when a loop will end. While a `continue` statement changes what will happen in each loop.
+
+#### Looping and Arrays
+
+Each map and array has a set amount of items that they contain. In Go, the `range` keyword can be used to work through these items one at a time within a loop. For example:
+
+```
+Array:
+
+letters := []string{"A", "B", "C", "D"}  
+for index, value := range letters {  
+  fmt.Println("Index:", index, "Value:", value)  
+}
+
+Output:
+Index: 0 Value: A  
+Index: 1 Value: B  
+Index: 2 Value: C  
+Index: 3 Value: D
+```
+
+```
+map:
+
+addressBook := map[string]string{  
+  "John": "12 Main St",  
+  "Janet": "56 Pleasant St",  
+  "Jordan": "88 Liberty Ln",  
+}  
+for key, value := range addressBook {  
+  fmt.Println("Name:", key, "Address:", value)  
+}
+
+output:
+Name: John Address: 12 Main St  
+Name: Janet Address: 56 Pleasant St  
+Name: Jordan Address: 88 Liberty Ln
+```
+
+#### Arrays
+
+An array is a collection of data elements of the same type, where we can access each **element** by an **index**.
+
+==create array==
+```
+var playerScores [4]int  // provide the number of elements
+fmt.Println(playerScores)
+
+this example creates an empty array of integer values with space for 4 elements.
+```
+
+```
+triangleSides := [3]int{15, 26, 30} // array with size and the element
+
+triangleAngles := [...]int{30, 60, 90} 
+
+// the compiler determine the length automatically using `...` ellipsis syntax.
+
+```
+
+==Access Array Values with Indices==
+
+```
+students = [3]string{"Jill", "Fred", "Sasha"}  
+ 
+fmt.Println(students[0]) // Go uses `0` as the first index of the array
+```
+
+==Modify array values==
+
+syntax : array[index] = value
+
+```
+myArray := [4]int{10, 24, 5, 47}
+myArray[2] = 33 // output : 10, 24, 33, 47
+```
+
+#### Slices
+
+**Slices** are a data collection type similar to arrays, but they have the ability to change their size while arrays has a fixed size.
+
+==Create slice ==
+
+We can create a slice from an array, or by itself.
+
+```
+// creating slice by itself
+  
+var numberSlice []int  // creating empty slice 
+stringSlice := []string{}  // creating empty slice 
+  
+names := []string{"Kathryn", "Martin", "Sasha", "Steven"} // create slice with elements 
+
+```
+
+```
+// creating slice from array
+
+array := [5]int{2, 5, 7, 1, 3}  
+ 
+sliceVersion := array[:] // This is a slice of the whole array 
+fmt.Println(sliceVersion)  // output : [2 5 7 1 3]
+partialSlice := array[2:5] // This slice contains the elements at index 2, 3, 4 
+fmt.Println(partialSlice)  
+// [7 1 3] Modifying the slice will still update the original array.
+```
+
+==len==
+`len` is a function which returns the length of an array or slice passed into it.
+```
+favoriteThings := [2]string{"Raindrops on Roses", "Whiskers on Kittens"}  
+fmt.Println(len(favoriteThings))  // 2  
+
+```
+
+Arrays only have a length, but slices have length and capacity.
+
+A slice is resizeable, so there is a difference between:
+
+- Its length, the current number of elements it holds
+- Its **capacity**, the number of elements it can hold before needing to resize itself.
+
+A slice’s capacity can be accessed through the `cap` function
+
+```
+slice := []string{"Fido", "Fifi", "FruFru"}  
+  
+fmt.Println(slice, len(slice), cap(slice)) // [Fido Fifi FruFru] 3 3  
+slice = append(slice, "FroFro")  
+// After appending an element when the slice is at capacity  
+// The slice will double in capacity, but increase its length by 1  
+fmt.Println(slice, len(slice), cap(slice)) // [Fido Fifi FruFru FroFro] 4 6
+```
+
+when we added an element to a slice which was at full capacity the following occured:
+
+- The new element was still able to be added
+- The length increased to fit the new element
+- The capacity doubled in size.
+
+All of this happens automatically using slices, while this is not possible with arrays!
+
