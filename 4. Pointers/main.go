@@ -18,4 +18,17 @@ func main(){
 	*pointerForStr = "Journeys to plan"  
 	
 	fmt.Println(lyrics) 
+
+	greeting := "Hello there!"
+	
+	// Call your brainwash() below:
+	
+	brainwash(&greeting)
+	fmt.Println("greeting is now:", greeting)
+}
+
+// explaining pass by value
+
+func brainwash(saying *string) {
+	*saying = "Beep Boop"
 }
