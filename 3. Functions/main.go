@@ -2,6 +2,11 @@ package main
 
 import "fmt"
 
+func brainwash(saying *string) {
+	// Dereference saying below: 
+	*saying = "Beep Boop"
+}
+
 // Create the function fuelGauge() here
 func fuelGauge(fuel int){
   fmt.Println("Fuel left = ", fuel)
@@ -50,4 +55,9 @@ func main() {
   fuel = flyToPlanet(planetChoice, fuel)
 
   fuelGauge(fuel)
+
+  greeting := "Hello there!"
+		
+	brainwash(&greeting)
+	fmt.Println("greeting is now:", greeting)
 }
