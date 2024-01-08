@@ -1,7 +1,6 @@
-# Golang-practice
 #### About GO
 
-- Go is a <u>open source</u> programming language developed by Google from 2007
+- Go is a ==<u>open source</u>== programming language developed by Google from 2007
 - Go is associated with backend development due to its features that make it well-suited for building scalable and concurrent server-side applications.
 - Developers use Go to create backend services, APIs, micro services, and other server-side components.
 - Go and Golang both same - Go is official name while Golang is a more like nickname.
@@ -73,6 +72,11 @@ To find more information about a package’s function:
 $ go doc fmt.println
 ```
 
+1. `package main` lets the Go compiler know that we want this code to compile and ==run as a standalone program, as opposed to being a library that's imported by other programs.== 
+2. Go, C, and Rust are all languages where the code is first converted to machine code by the compiler before it's executed. - thats why Go is a compiler language
+3. `import fmt` imports the `fmt` (formatting) package. The formatting package exists in Go's standard library and lets us do things like print text to the console.
+4. `func main()` defines the `main` function. `main` is the name of the function that acts as the entry point for a Go program.
+
 #### Variables in Go:
 
 a value for eg: 120 or "hello" or 12.34 is literal in GO
@@ -86,7 +90,7 @@ fmt.Println(55.21 / 5) // Prints: 11.042
 fmt.Println(9 % 2) // Prints: 1
 ```
 
-==const declaration== - const once declared cant be changed and has to be assigned value while initializing
+==const declaration== - const once declared cant be changed and has to be assigned value while initializing. Constants can't use the `:=` short declaration syntax. Constants can be character, string, boolean, or numeric values. They _can not_ be more complex types like slices, maps and structs
 
 ```
 const funFact = "Hummingbirds"  
@@ -172,7 +176,14 @@ fmt.Println(teacherName) // Doesn't print anything
 fmt.Println(isPassFail) // Prints false
 ```
 
+Some types can be converted the following way:
 
+```
+temperatureFloat := 88.26
+temperatureInt := int64(temperatureFloat) 
+
+// Converting a float to integer will truncate the floating point portion
+```
 #### Inferring Variables
 
 declare a variable without  stating its type using the short declaration `:=` operator
@@ -619,6 +630,30 @@ var gradeLetter string  
 }
 ```
 
+Return values may be given names, and if they are, then they are treated the same as if they were new variables defined at the top of the function.
+
+Named return values are best thought of as a way to document the purpose of the returned values.
+
+A return statement without arguments returns the named return values. This is known as a "naked" return. Naked return statements should be used only in short functions. They can harm readability in longer functions.
+
+```go
+func getCoords() (x, y int){
+  // x and y are initialized with zero values
+
+  return // automatically returns x and y
+}
+```
+
+is the same as:
+
+```go
+func getCoords() (int, int){
+  var x int
+  var y int
+  return x, y
+}
+```
+
 ### Deferring Resolution
 
 We can delay a function call to the end of the current scope by using the `defer` keyword. `defer` tells Go to run a function, but at the end of the current function. 
@@ -670,6 +705,8 @@ pointerForStr := &lyrics
   
 fmt.Println(lyrics) // Prints: Journeys to plan
 ```
+
+If a pointer points to nothing (the zero value of the pointer type) then dereferencing it will cause a runtime error that crashes the program.
 
 Go is a pass-by-value language while Js which is pass by reference language
 
@@ -785,7 +822,7 @@ Name: Jordan Address: 88 Liberty Ln
 
 #### Arrays
 
-An array is a collection of data elements of the same type, where we can access each **element** by an **index**.
+An array is a collection of data elements of the same type, where we can access each **element** by an **index**. An array is a fixed size ordered list of elements with the same data type. Arrays are useful for collecting and accessing multiple related values.
 
 ==create array==
 ```
@@ -884,5 +921,406 @@ when we added an element to a slice which was at full capacity the following occ
 - The length increased to fit the new element
 - The capacity doubled in size.
 
-All of this happens automatically using slices, while this is not possible with arrays!
+All of this happens automatically using slices, while this is not possible with arrays
+
+Go provides us with a function, `append` that handles adding to and resizing a slice
+
+```
+books := []string{"Tom", "Men"}  
+books = append(books, "Frankenstein")  
+books = append(books, "Dracula")  
+fmt.Println(books) // [Tom Men Frankenstein Dracula]
+```
+
+To pass an array parameter into a function, we provide a local name, square brackets, and the data type. The difference between slice and array parameters is whether the number of elements is stated:
+
+```
+func printFirstLastArray(array [4]int) {    
+	fmt.Println("First", array[0])    
+	fmt.Println("Last", array[3])
+}
+
+func printFirstLastSlice(slice []int) {   
+	length := len(slice)    
+	if (length > 0) {        
+		fmt.Println("First", slice[0])        
+		fmt.Println("Last", slice[length-1])    
+	}
+}
+```
+
+Due to Go being a pass by value language, modifying a normal array parameter won’t create permanent change. Sometimes this can be useful in performing local calculations
+
+```
+// Changes to the array will only be local to the function  
+func changeFirst(array [4]int, value int) {  
+    array[0] = value  
+}
+```
+
+In order to retain changes, a slice can be used
+
+```
+// Changes to the slice parameter will be permanent  
+func changeFirst(slice []int, value int) {  
+    if (len(slice) > 0) {  
+        slice[0] = value  
+    }  
+}
+```
+
+#### Maps
+
+A map is an unordered collection of **keys** and **values**.  Maps can be initialized with or without data.
+
+Here is an example of connecting a key of type `string` with a value of type `int`:
+
+|Key|Value|
+|---|---|
+|Joe|2126778723|
+|Angela|4089978763|
+|Shawn|3143776876|
+|Terell|5026754531|
+Unlike array, values in a map are not accessed by indices. Maps allow for very fast lookups by organizing the values for retrieval.
+
+In Go, there are two ways to create a map.
+
+==Creating a map with make==
+
+We can use the `make` function to create an empty map. The format is:
+
+```
+variableName := make(map[keyType]valueType)
+prices := make(map[string]float32)
+```
+
+==Creating a map with values==
+If we know some map values, we can specify them as follows:
+
+```
+variableName := map[keyType]valueType{    
+  name1: value1,    
+  name2: value2,    
+  name3: value3,
+}
+
+contacts := map[string]int{  
+    "Joe":    2126778723,  
+    "Angela": 4089978763,  
+    "Shawn":  3143776876,  
+    "Terell": 5026754531,  
+}
+```
+
+to access a value in map 
+
+	variable := yourMap[keyValue]
+
+If a key is not in the map, a default value for value type is returned. We can also get a second return value to determine if the key is in the map. We can look up values with a key. We can also get a `status` value to determine if the key was set in the map.
+
+```
+customer,status := customers["billy"]  
+  
+if status {  
+  fmt.Println("we found the customer")  
+} else {  
+  fmt.Println("no such customer!")  
+}
+```
+
+Maps are also easy to add key-value pairs or to change the value of an existing pair.
+
+	yourMap[newKey] = newValue
+
+So to add a new customer balance, we could do:
+
+```
+customers["Samantha"] =  1.25
+```
+
+to change an existing value 
+
+```
+customers["Samantha"] =  2.75
+```
+
+Go allows us to remove elements using the **`delete`** function:
+
+```
+delete(yourMap, keyValueToDelete)
+
+delete(contacts, "Gary") 
+
+// If we call the `delete` function with a key that is not in the map nothing bad happens.
+```
+
+#### Structs
+
+a way to group several variables into one custom data type. These types make the code cleaner, more intuitive, and less error-prone. grouping together related variables is done using `struct`
+
+A group of related variables can be defined as a struct. Each variable within a struct is known as a field.
+
+Define structs
+
+A struct must be defined before it can be used in a program. The definition of a struct includes its name and its fields. A **field** is one of the internal variables  inside a struct. We use the following template:
+
+```
+// Struct names begin with a capital letter in Go
+type NameOfStruct struct {  
+	// Struct fields go here
+}
+```
+
+if we want to define a 2D point with an x and y coordinate. We could define two variables `x` and `y` and use them throughout our program. instead we can create a struct called `Point` which contains both coordinates. Defining `Point` in this way logically groups together the relevant data types. We would define the struct for `Point` like so:
+
+```
+type Point struct { 
+	x int  
+	y int
+}
+```
+
+Creating an Instance of a Struct
+
+To use a struct we defined, we have to create an instance of it.
+
+	p1 := Point{x: 10, y: 12} 
+	or 
+	var p1 = Point{x: 10, y: 12}
+
+Go allows us to rely on default values as well. We can omit fields
+
+	p1 := Point{x: 10}  
+	// y will be set to 0
+
+we can omit all fields to rely only on default values:
+
+```
+p1 := Point{} // x and y will be set to 0
+```
+
+The order of our struct definition allows us to avoid labeling our fields. The values are assigned from left to right according to how the fields are defined in the struct from top to bottom.
+
+	p1 := Point{10, 12}  // Same as var p1 = Point{10, 12}
+	When not using labels, we must provide values for every field;
+
+Access and modify a struct’s variables
+
+access individual fields within struct using the name of the variable, `.`, and the name of the field
+
+```
+john := Student{"John", "Smith", 14, 9}
+fmt.Println(john.firstName)
+```
+
+modify the value of a field with an assignment statement:
+
+```
+john.age = 15
+```
+
+Functions that Access a Struct
+
+```
+type Rectangle struct {  
+  length float32  
+  width  float32  
+}
+
+func (rectangle Rectangle) area() float32 {  
+  return rectangle.length * rectangle.width  
+}
+
+// functions associated with a struct are written outside of the struct!
+```
+
+Defining a function in this way will only pass in a copy of the rectangle: that is, we will not be able to use the function to alter the value of a field.
+
+to call the `area()` function like so:
+
+```
+rectangle.area()
+```
+
+
+Pointers to a Struct
+
+Without pointers, when a variable is passed into a function, only a copy of it is used inside the function. We can use pointers to modify values in our structs within a function.
+
+```
+type Employee struct {  
+  firstName string  
+  lastName string  
+  age int  
+  title string  
+}
+```
+We must first create an instance of `Employee` and then we create a pointer that will point to this instance.
+
+```
+func main() {  
+  steve := Employee{“Steve”, “Stevens”, 34, “Junior Manager”}  
+  pointerToSteve := &steve  
+}
+```
+
+We can now use this pointer to change the values of the fields for `steve`. There are two ways to do this in Go:
+
+```
+(*pointerToSteve).firstName or  pointerToSteve.firstName
+```
+
+We can use these pointers to modify structs in our functions. Consider the following example:
+
+```
+func (rectangle *Rectangle) modify(newLength float32){  
+	rectangle.length = newLength
+}
+// notice `rectangle` is also a pointer
+```
+
+ It is dereferenced without the use of the dereferencing operator just like `pointerToSteve`
+
+Arrays of Structs
+
+to deal with many structs of the same type, We can use them in an array together. Let’s say we want to create an array of the following points: {1, 1} {7, 27} {12, 7} {9, 25}
+
+We create an array of `Point`s like so:
+
+```
+points := []Point{{1, 1}, {7, 27}, {12, 7}, {9, 25}}
+```
+
+If the points have names, we can also create the array like this:
+
+```
+a = {1, 1}
+b = {7, 27}
+c = {12, 7}
+d = {9, 25}
+points := []Point{a, b, c, d}
+```
+
+access the contents of this array same as array. We can also access and modify the fields of each of the array elements.
+
+```
+points := []Point{{1, 1}, {7, 27}, {12, 7}, {9, 25}}
+fmt.Println(points[0]) // Output will be {1, 1}
+
+points := []Point{{1, 1}, {7, 27}, {12, 7}, {9, 25}}
+points[1].x = 8
+points[1].y = 16
+fmt.Println(points[1]) // Output will be {8, 16}
+```
+
+Nested Structs
+
+When we have complex groups of fields in our structs they can be combined into their own struct.
+
+```
+type Name struct{  
+  firstName string  
+  lastName string  
+}  
+  
+type Employee struct{  
+  name Name  
+  age int  
+  title string  
+}
+
+the `Employee` struct, has two separate fields for the first and last name of the employee. We can combine those two into their own struct called `Name`.
+```
+
+We create an instance of `Employee` like 
+
+```
+carl := Employee{Name{“Carl”, “Carlson”}, 32, “Engineer”}
+```
+
+To access the fields of the nested struct (`Name` in this case), we chain together the field accesses like so:
+
+```
+fmt.Println(carl.name.lastName) // Output will be “Carlson”
+```
+
+define the employee struct with the `Name` struct anonymously like so:
+
+```
+type Employee struct{  Name  age int  title string}
+
+// notice the `Name` file has no associated variable name with it
+```
+
+Composing a struct in this way allows us to access the `firstName` and `lastName` fields directly from the `Employee` struct.
+
+```
+carl := Employee{Name{“Carl”, “Carlson”}, 32, “Engineer”}
+fmt.Println(carl.firstName) // Output will be “Carl”
+fmt.Println(carl.lastName) // Output will be “Carlson”
+```
+
+We cannot have two anonymous fields of the same type (i.e., two `Name` fields) as that would make it impossible to tell which field is being accessed (which `firstName` if two anonymous `Name` fields). An anonymous field is used to field access easier and leads to cleaner code.
+
+#### Errors in Go
+
+Go programs express errors with `error` values. An Error is any type that implements the simple built-in [error interface](https://blog.golang.org/error-handling-and-go):
+
+```go
+type error interface {
+    Error() string
+}
+```
+
+When something can go wrong in a function, that function should return an `error` as its last return value. Any code that calls a function that can return an `error` should handle errors by testing whether the error is `nil`.
+
+```go
+// Atoi converts a stringified number to an interger
+i, err := strconv.Atoi("42b")
+if err != nil {
+    fmt.Println("couldn't convert:", err)
+    // because "42b" isn't a valid integer, we print:
+    // couldn't convert: strconv.Atoi: parsing "42b": invalid syntax
+    // Note: 'parsing "42b": invalid syntax' is returned by  .Error() method
+    return
+}
+// if we get here, then i was converted successfully
+```
+
+A `nil` error denotes success. A non-nil error denotes failure.
+
+### The Error Interface
+
+Because errors are just interfaces, you can build your own custom types that implement the `error` interface. Here's an example of a `userError` struct that implements the `error` interface:
+
+```go
+type userError struct {
+    name string
+}
+
+func (e userError) Error() string {
+    return fmt.Sprintf("%v has a problem with their account", e.name)
+}
+```
+
+It can then be used as an error:
+
+```go
+func sendSMS(msg, userName string) error {
+    if !canSendToUser(userName) {
+        return userError{name: userName}
+    }
+    ...
+}
+```
+
+Go programs express errors with `error` values. Error-values are any type that implements the simple built-in [error interface](https://blog.golang.org/error-handling-and-go).
+
+In Go, an `error` is just another value that we handle like any other value – no special keywords 
+
+The Go standard library provides an "errors" package that makes it easy to deal with errors.
+
+```go
+var err error = errors.New("something went wrong")
+```
 
