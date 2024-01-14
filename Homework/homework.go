@@ -17,9 +17,22 @@ package main
 
 import "fmt"
 
+func checkNumberEvenOrOdd(num int) (string){
+	if(num % 2 == 0){
+		return fmt.Sprintf("%d is an even number", num)
+	} else {
+		return fmt.Sprintf("%d is an odd number", num)
+	}
+}
 func main(){
 	var num int
-	fmt.Scan("Enter a number : ", &num)
+	fmt.Print("Enter a number : ")
+	_,err := fmt.Scan(&num)
 
-	fmt.println(num)
+	if(err != nil){
+		fmt.Println("Please Enter a valid number.")
+	} else {
+		result := checkNumberEvenOrOdd(num)
+		fmt.Println(result)
+	}
 }
