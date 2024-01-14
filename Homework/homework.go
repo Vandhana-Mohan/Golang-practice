@@ -18,6 +18,9 @@ The first argument is a string "The area of the rectangle is calculated."
 The second argument is the calculated area.
 Example output for valid dimensions: "The area of the rectangle is calculated", 30.
 
+write a program that uses zero value, short declaration operator, multiple initializations, 
+var when specifity is required, and blank identifier
+
 */
 
 package main
@@ -38,6 +41,15 @@ func checkNumberEvenOrOdd(num int) (string){
 	}
 }
 func main(){
+
+	var a int // zero value
+	b := 32 // short declaration operator
+	c, d := 34, "hello" // multiple initialization
+	af,bf,cf,_,ef := 1,2,3,4,5 // blank identifier
+	var ff float32 = 32.34 // var when specificity is required
+
+
+
 	var num int
 	fmt.Print("Enter a number : ")
 	_,err := fmt.Scan(&num)
@@ -63,4 +75,6 @@ func main(){
 		result, value := calculateAreaRectangle(length, width)
 		fmt.Println(result, value)
 	}
+
+	fmt.Println(a,b,c,d,af,bf,cf,ef,ff)
 }
