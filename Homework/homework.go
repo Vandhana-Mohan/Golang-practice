@@ -18,7 +18,7 @@ The first argument is a string "The area of the rectangle is calculated."
 The second argument is the calculated area.
 Example output for valid dimensions: "The area of the rectangle is calculated", 30.
 
-write a program that uses zero value, short declaration operator, multiple initializations, 
+write a program that uses zero value, short declaration operator, multiple initializations,
 var when specifity is required, and blank identifier
 
 */
@@ -27,34 +27,38 @@ package main
 
 import "fmt"
 
+var hello = "hi"
 
-func calculateAreaRectangle(len, width int) (string, int){
+const number = 42.42
+
+func calculateAreaRectangle(len, width int) (string, int) {
 	area := len * width
 	return "The area of the rectangle is calculated : ", area
 }
 
-func checkNumberEvenOrOdd(num int) (string){
-	if(num % 2 == 0){
+func checkNumberEvenOrOdd(num int) string {
+	if num%2 == 0 {
 		return fmt.Sprintf("%d is an even number", num)
 	} else {
 		return fmt.Sprintf("%d is an odd number", num)
 	}
 }
-func main(){
+func main() {
 
-	var a int // zero value
-	b := 32 // short declaration operator
-	c, d := 34, "hello" // multiple initialization
-	af,bf,cf,_,ef := 1,2,3,4,5 // blank identifier
-	var ff float32 = 32.34 // var when specificity is required
+	var a int                          // zero value
+	b := 32                            // short declaration operator
+	c, d := 34, "hello"                // multiple initialization
+	af, bf, cf, _, ef := 1, 2, 3, 4, 5 // blank identifier
+	var ff float32 = 32.34             // var when specificity is required
 
-
+	fmt.Printf("this %v variable is declared outside main and is type %T\n", hello, hello)
+	fmt.Printf("this %v variable is declared outside main and is type %T\n", number, number)
 
 	var num int
 	fmt.Print("Enter a number : ")
-	_,err := fmt.Scan(&num)
+	_, err := fmt.Scan(&num)
 
-	if(err != nil){
+	if err != nil {
 		fmt.Println("Please Enter a valid number.")
 	} else {
 		result := checkNumberEvenOrOdd(num)
@@ -67,14 +71,14 @@ func main(){
 	_, err1 := fmt.Scan(&length)
 
 	fmt.Print("Enter the width of the rectangle : ")
-	_,err2 := fmt.Scan(&width)
+	_, err2 := fmt.Scan(&width)
 
-	if(err1 != nil || err2 != nil){
+	if err1 != nil || err2 != nil {
 		fmt.Println("Please enter valid number.")
 	} else {
 		result, value := calculateAreaRectangle(length, width)
 		fmt.Println(result, value)
 	}
 
-	fmt.Println(a,b,c,d,af,bf,cf,ef,ff)
+	fmt.Println(a, b, c, d, af, bf, cf, ef, ff)
 }
