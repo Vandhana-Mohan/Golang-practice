@@ -49,6 +49,11 @@ func main() {
   for key, value := range addressBook {
     fmt.Println("Name:", key, "Address:", value)
   }
+  sum := 0
+	for i := 0; i < 10; i++ {
+		sum += i
+	}
+	fmt.Println(sum)
     
 }
 
