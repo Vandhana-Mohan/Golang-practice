@@ -82,6 +82,15 @@ func main() {
     //     }
     // }
     // fmt.Println("2d: ", twoD)
+
+    var ade [2]string
+	ade[0] = "Hello"
+	ade[1] = "World"
+	fmt.Println(ade[0], ade[1])
+	fmt.Println(ade)
+
+	primes := [6]int{2, 3, 5, 7, 11, 13}
+	fmt.Println(primes)
 }
 
 
