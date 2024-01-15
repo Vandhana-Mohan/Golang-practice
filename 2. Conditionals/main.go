@@ -59,4 +59,9 @@ func main() {
 		pow(3, 2, 10),
 		pow(3, 3, 20),
 	)
+
+  defer fmt.Println("world")
+
+	fmt.Println("hello")
+  
 }
