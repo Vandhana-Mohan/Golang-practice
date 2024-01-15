@@ -2,9 +2,19 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 	"time"
 )
+func pow(x, n, lim float64) float64 {
+	if v := math.Pow(x, n); v < lim {
+		return v
+	} else {
+		fmt.Printf("%g >= %g\n", v, lim)
+	}
+	// can't use v here, though
+	return lim
+}
 
 func main() {
   rand.Seed(time.Now().UnixNano())
@@ -45,4 +55,8 @@ func main() {
     }
   }
   fmt.Println("The status of isHeistOn is ", isHeistOn)
+  fmt.Println(
+		pow(3, 2, 10),
+		pow(3, 3, 20),
+	)
 }
