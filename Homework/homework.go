@@ -81,4 +81,10 @@ func main() {
 	}
 
 	fmt.Println(a, b, c, d, af, bf, cf, ef, ff)
+
+	if(a > 20){
+		fmt.Println("a is even")
+	} else {
+		fmt.Println("a is odd")
+	}
 }
