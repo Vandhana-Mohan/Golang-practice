@@ -82,7 +82,5 @@ func main() {
 
 	fmt.Println(a, b, c, d, af, bf, cf, ef, ff)
 
-	for i := 10; i < 20; i++ {
-		fmt.Println(i)
-	}
+	
 }
